@@ -79,20 +79,20 @@ CMD ["python", "app.py"]
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/api-atividade.git
-cd api-atividade
+git clone https://github.com/seu-usuario/atividade_service.git
+cd atividade_service
 ```
 
 2. Construa a imagem Docker:
 
 ```bash
-docker build -t api-atividade .
+docker build -t atividade_service .
 ```
 
 3. Rode o container:
 
 ```bash
-docker run -d -p 5002:5002 api-atividade
+docker run -d -p 5002:5002 atividade_service
 ```
 
 A API estará acessível em: `http://localhost:5002/atividades`
