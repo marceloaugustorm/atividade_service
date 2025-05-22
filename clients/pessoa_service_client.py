@@ -1,11 +1,11 @@
 import requests
 
-PESSOA_SERVICE_URL = "http://localhost:5001/pessoas"
+PESSOA_SERVICE_URL = "http://localhost:8000"
 
 class PessoaServiceClient:
     @staticmethod
     def verificar_leciona(id_professor, id_disciplina):
-        url = f"{PESSOA_SERVICE_URL}/leciona/{id_professor}/{id_disciplina}"
+        url = f"{PESSOA_SERVICE_URL}/turmas/leciona/{id_professor}/{id_disciplina}"
         try:
             response = requests.get(url)
             response.raise_for_status()
