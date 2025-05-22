@@ -1,60 +1,22 @@
 # 📘 API de Atividades
 
-API desenvolvida em Flask para gerenciamento e exibição de atividades acadêmicas. Esta API é parte de um ecossistema de microsserviços e possui integração com a API de Pessoas para validação de professores.
+API Flask para gerenciamento de atividades acadêmicas. Este serviço faz parte de um ecossistema de microsserviços e integra-se com o serviço de Pessoas para validar o acesso de professores.
 
 ---
 
-## 📄 Descrição da API
+## 📄 Funcionalidades
 
-A API de Atividades permite:
-
-- 🔍 Listar todas as atividades  
-- 📑 Buscar uma atividade específica  
-- 🧑‍🏫 Visualizar uma atividade conforme permissões do professor (verificação com API externa)
+- 🔍 Listagem de atividades
+- 📑 Consulta de atividade por ID
+- 🧑‍🏫 Exibição de atividade com validação de permissão via API externa
 
 ---
 
-## 🚀 Instruções de Execução (com Docker)
+## 🏗️ Arquitetura
 
-### Pré-requisitos
+A aplicação utiliza a **fábrica de aplicação** (`create_app`) para configurar e iniciar a API. As rotas são organizadas por meio de **blueprints**, com a seguinte estrutura:
 
-- [Docker](https://www.docker.com/) instalado
-
-### Passos:
-
-1. Clone o repositório:
-
-```bash
-git clone https://github.com/seu-usuario/api-atividade.git
-cd api-atividade
-```
-
-2. Crie um arquivo `requirements.txt` com as dependências:
-
-```txt
-flask
-requests
-```
-
-3. Crie um `Dockerfile` na raiz do projeto:
-
-```Dockerfile
-# Dockerfile
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY . .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-EXPOSE 5000
-
-CMD ["python", "app.py"]
-```
-
-4. Crie um `app.py` com o seguinte conteúdo:
-
+```python
 from config import create_app
 from controllers.atividade_controller import atividade_bp
 
@@ -63,13 +25,24 @@ app.register_blueprint(atividade_bp, url_prefix='/atividades')
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5002)
+```
 
-5. Estrutura de diretórios recomendada:
+---
+
+## 🚀 Executando com Docker
+
+### 📦 Pré-requisitos
+
+- Docker instalado
+
+### 📁 Estrutura esperada
 
 ```
 api-atividade/
 ├── app.py
-├── atividade_routes.py
+├── config.py
+├── controllers/
+│   └── atividade_controller.py
 ├── models/
 │   └── atividade_model.py
 ├── clients/
@@ -78,16 +51,58 @@ api-atividade/
 └── Dockerfile
 ```
 
+### 🧪 `requirements.txt`
+
+```txt
+flask
+requests
+```
+
+### 🐳 `Dockerfile`
+
+```Dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 5002
+
+CMD ["python", "app.py"]
+```
+
+### ▶️ Execução
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/seu-usuario/api-atividade.git
+cd api-atividade
+```
+
+2. Construa a imagem Docker:
+
+```bash
+docker build -t api-atividade .
+```
+
+3. Rode o container:
+
+```bash
+docker run -d -p 5002:5002 api-atividade
+```
+
+A API estará acessível em: `http://localhost:5002/atividades`
+
 ---
 
 ## 🔗 Integração com Microsserviços
 
-Esta API se comunica com o **serviço de Pessoas** através do `PessoaServiceClient` para verificar se o professor leciona determinada disciplina. Se não leciona, o campo `respostas` é omitido da resposta.
-
-Exemplo de chamada protegida:
-```
-GET /atividades/5/professor/3
-```
+Esta API se comunica com o **serviço de Pessoas** através do `PessoaServiceClient`, para verificar se um professor tem permissão para visualizar determinadas atividades.  
+Se não leciona a disciplina, o campo `respostas` será ocultado da resposta.
 
 ---
 
@@ -97,17 +112,17 @@ GET /atividades/5/professor/3
 |--------|--------------------------------------------------------|---------------------------------------------------------------------------|
 | GET    | `/atividades/`                                         | Lista todas as atividades                                                |
 | GET    | `/atividades/<id_atividade>`                           | Retorna uma atividade específica                                         |
-| GET    | `/atividades/<id_atividade>/professor/<id_professor>` | Retorna a atividade com/sem respostas conforme permissões do professor  |
+| GET    | `/atividades/<id_atividade>/professor/<id_professor>` | Retorna a atividade filtrando dados com base no professor                |
 
 ---
 
 ## 📌 Observações
 
-- A API responde com status `404` caso a atividade não seja encontrada.
-- A validação do professor é feita consultando a API de Pessoas.
+- A lógica de inicialização da aplicação está separada em `config.py`, seguindo o padrão **Flask Factory**.
+- As rotas estão organizadas no módulo `controllers/atividade_controller.py`.
 
 ---
 
 ## 📜 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+Este projeto está sob a licença MIT.
