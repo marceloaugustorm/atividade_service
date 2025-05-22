@@ -55,16 +55,14 @@ CMD ["python", "app.py"]
 
 4. Crie um `app.py` com o seguinte conteúdo:
 
-```python
-from flask import Flask
-from atividade_routes import atividade_bp
+from config import create_app
+from controllers.atividade_controller import atividade_bp
 
-app = Flask(__name__)
-app.register_blueprint(atividade_bp, url_prefix="/atividades")
+app = create_app()
+app.register_blueprint(atividade_bp, url_prefix='/atividades')
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
-```
+if __name__ == '__main__':
+    app.run(host='localhost', port=5002)
 
 5. Estrutura de diretórios recomendada:
 
