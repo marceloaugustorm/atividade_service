@@ -14,3 +14,5 @@ class PessoaServiceClient:
         except requests.RequestException as e:
             print(f"Erro ao acessar o pessoa_service: {e}")
             return False
+        
+    
