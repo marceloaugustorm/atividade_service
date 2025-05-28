@@ -1,3 +1,4 @@
+```
 # 📘 API de Atividades
 
 API Flask para gerenciamento de atividades acadêmicas. Este serviço faz parte de um ecossistema de microsserviços e integra-se com o serviço de Pessoas para validar o acesso de professores.
@@ -9,6 +10,7 @@ API Flask para gerenciamento de atividades acadêmicas. Este serviço faz parte 
 - 🔍 Listagem de atividades
 - 📑 Consulta de atividade por ID
 - 🧑‍🏫 Exibição de atividade com validação de permissão via API externa
+- 📝 Criação de novas atividades com respostas associadas
 
 ---
 
@@ -53,7 +55,7 @@ api-atividade/
 
 ### 🧪 `requirements.txt`
 
-```txt
+```
 flask
 requests
 ```
@@ -86,7 +88,7 @@ cd atividade_service
 2. Construa a imagem Docker:
 
 ```bash
-docker build -t atividade_service .
+docker build -t atividade_service . 
 ```
 
 3. Rode o container:
@@ -113,6 +115,7 @@ Se não leciona a disciplina, o campo `respostas` será ocultado da resposta.
 | GET    | `/atividades/`                                         | Lista todas as atividades                                                |
 | GET    | `/atividades/<id_atividade>`                           | Retorna uma atividade específica                                         |
 | GET    | `/atividades/<id_atividade>/professor/<id_professor>` | Retorna a atividade filtrando dados com base no professor                |
+| POST   | `/atividades/`                                         | Cria uma nova atividade com respostas associadas                         |
 
 ---
 
@@ -126,3 +129,4 @@ Se não leciona a disciplina, o campo `respostas` será ocultado da resposta.
 ## 📜 Licença
 
 Este projeto está sob a licença MIT.
+```
